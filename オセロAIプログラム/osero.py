@@ -46,7 +46,8 @@ MAX_TURNS = 60
 
 # 人間の色
 print("B か Wを入力してください")
-HUMAN_COLOR = input()
+# HUMAN_COLOR = input()
+HUMAN_COLOR = "B"
 
 
 """
@@ -527,7 +528,7 @@ class Board:
 """
 メインコード
 """
-for _ in range(50):
+for _ in range(500):
     # jsonファイルの読込み
     a = path.join(path.dirname(__file__), 'osero.json')
     with open(a, 'r') as f:
