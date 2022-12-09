@@ -5,12 +5,14 @@ import numpy as np
 import random
 import sys
 import json
+from os import path
 """
 jsonファイルopen
 """
 # osero.jsonを開く
-with open('./osero.json') as f:
-    osero_file = json.load(f)
+# a = path.join(path.dirname(__file__), 'osero.json')
+# with open(a, 'r') as f:
+#     osero_file = json.load(f)
 
 """
 定数宣言
@@ -525,93 +527,104 @@ class Board:
 """
 メインコード
 """
+for _ in range(50):
+    # jsonファイルの読込み
+    a = path.join(path.dirname(__file__), 'osero.json')
+    with open(a, 'r') as f:
+        osero_file = json.load(f)
 
-# ボートインスタンスの作成
-board = Board()
+    # ボートインスタンスの作成
+    board = Board()
 
-# 手番ループ
-while True:
+    # 手番ループ
+    while True:
 
-    # 盤面の表示
-    board.display()
+        # 盤面の表示
+        # board.display()
 
-    # 手番の表示
-    if board.CurrentColor == BLACK:
-        print('黒の番です:', end = "")
-    else:
-        print('白の番です:', end = "")
+        # 手番の表示
+        # if board.CurrentColor == BLACK:
+        #     print('黒の番です:', end = "")
+        # else:
+        #     print('白の番です:', end = "")
 
-    # CPU or 人間
-    if board.CurrentColor == board.humanColor:
-        # 人間の手を入力
-        IN = input()
-    else: # ランダムAI
-        IN = board.randomInput()
-        print(IN)
+        # CPU or 人間
+        if board.CurrentColor == board.humanColor:
+            # 人間の手を入力
+            # IN = input()
+            #ランダムAI
+            IN = board.randomInput()
+        else: # ランダムAI
+            IN = board.randomInput()
+            print(IN)
+        print()
+
+        # 対戦を終了
+        if IN == "e":
+            print('おつかれ')
+            break
+
+        # 入力手をチェック
+        if board.checkIN(IN):
+            x = IN_ALPHABET.index(IN[0]) + 1
+            y = IN_NUMBER.index(IN[1]) + 1
+        else:
+            print('正しい形式(例：f5)で入力してください')
+            continue
+
+        #tupleで受け取る
+        arg = ''
+        for i in board.RawBoard:
+            for j in i:
+                arg += str(j)
+
+        # 手を打つ
+        if not board.move(x, y):
+            print('そこには置けません')
+            continue
+
+        #置ける手の数を取得
+        count = 0
+        for i in board.MovablePos:
+            for j in i:
+                if j:
+                    count += 1
+        osero_file[arg + IN] = count
+
+        # 終局判定
+        if board.isGameOver():
+            # board.display()
+            print('おわり')
+            break
+
+        # パス
+        if not board.MovablePos[:, :].any():
+            board.CurrentColor = - board.CurrentColor
+            board.initMovable()
+            print('パスしました')
+            print()
+            continue
+
+
+    # ゲーム終了後の表示
     print()
 
-    # 対戦を終了
-    if IN == "e":
-        print('おつかれ')
-        break
+    ## 各色の数
+    count_black = np.count_nonzero(board.RawBoard[:, :] == BLACK)
+    count_white = np.count_nonzero(board.RawBoard[:, :] == WHITE)
 
-    # 入力手をチェック
-    if board.checkIN(IN):
-        x = IN_ALPHABET.index(IN[0]) + 1
-        y = IN_NUMBER.index(IN[1]) + 1
+    print('黒:', count_black)
+    print('白:', count_white)
+
+    ## 勝敗
+    dif = count_black - count_white
+    if dif > 0:
+        print('黒の勝ち')
+    elif dif < 0:
+        print('白の勝ち')
     else:
-        print('正しい形式(例：f5)で入力してください')
-        continue
+        print('引き分け')
 
-    #tupleで受け取る
-    tpl = tuple(board.RawBoard)
-
-    # 手を打つ
-    if not board.move(x, y):
-        print('そこには置けません')
-        continue
-
-    #置ける手の数を取得
-    count = 0
-    for i in board.MovablePos:
-        for j in i:
-            if j:
-                count += 1
-    osero_file[tpl][IN] = count
-
-    # 終局判定
-    if board.isGameOver():
-        board.display()
-        print('おわり')
-        break
-
-    # パス
-    if not board.MovablePos[:, :].any():
-        board.CurrentColor = - board.CurrentColor
-        board.initMovable()
-        print('パスしました')
-        print()
-        continue
-
-
-# ゲーム終了後の表示
-print()
-
-## 各色の数
-count_black = np.count_nonzero(board.RawBoard[:, :] == BLACK)
-count_white = np.count_nonzero(board.RawBoard[:, :] == WHITE)
-
-print('黒:', count_black)
-print('白:', count_white)
-
-## 勝敗
-dif = count_black - count_white
-if dif > 0:
-    print('黒の勝ち')
-elif dif < 0:
-    print('白の勝ち')
-else:
-    print('引き分け')
-
-with open('osero.json', 'w') as f:
-    json.dump(osero_file, f, indent=2, ensure_ascii=False)
+    # jsonファイル書き込み
+    with open(a, 'w') as f:
+        json.dump(osero_file, f, indent=2, ensure_ascii=False)
