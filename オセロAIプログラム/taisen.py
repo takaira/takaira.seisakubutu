@@ -538,10 +538,11 @@ class Board:
             else:
                 dct[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]] = file[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]]
         else:
-            num = 0
+            # 全て辞書内にあるなら有利そうな手を選ぶ
+            num = 60
             key = ''
             for i, j in dct.items():
-                if num <= j:
+                if num >= j:
                     key = i
                     num = j
             return key[-2:]
