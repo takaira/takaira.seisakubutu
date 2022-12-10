@@ -506,7 +506,8 @@ class Board:
     """
     ランダムに手を打つCPU
     """
-    def randomInput(self):
+    # def randomInput(self):
+    def randomInput(self, file):
 
         # マス判定(skip)をして置けるマスが無い場合はFalseを返す
         if board.skip == True:
@@ -517,9 +518,26 @@ class Board:
 
         # 候補からランダムに手を選ぶ
 
-        randam_chosen_index = random.randrange(len(grids[0]))
-        x_grid = grids[0][randam_chosen_index]
-        y_grid = grids[1][randam_chosen_index]
+        # randam_chosen_index = random.randrange(len(grids[0]))
+        # x_grid = grids[0][randam_chosen_index]
+        # y_grid = grids[1][randam_chosen_index]
+
+        # strで受け取る
+        arg = ''
+        for i in self.RawBoard:
+            for j in i:
+                arg += str(j)
+
+        # 候補から辞書にない手を選ぶ
+        for i in range(len(grids)):
+            x_grid = grids[0][i]
+            y_grid = grids[1][i]
+            if arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1] not in file:
+                break
+        else:
+            randam_chosen_index = random.randrange(len(grids[0]))
+            x_grid = grids[0][randam_chosen_index]
+            y_grid = grids[1][randam_chosen_index]
 
         # オセロの正式な座標表現で返す
         return IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]
@@ -528,7 +546,7 @@ class Board:
 """
 メインコード
 """
-for _ in range(250):
+for _ in range(100):
     # jsonファイルの読込み
     a = path.join(path.dirname(__file__), 'osero.json')
     with open(a, 'r') as f:
@@ -543,6 +561,9 @@ for _ in range(250):
         # 盤面の表示
         # board.display()
 
+        # glidsの表示
+        # print(np.where(board.MovablePos == 1))
+
         # 手番の表示
         # if board.CurrentColor == BLACK:
         #     print('黒の番です:', end = "")
@@ -554,9 +575,9 @@ for _ in range(250):
             # 人間の手を入力
             # IN = input()
             #ランダムAI
-            IN = board.randomInput()
+            IN = board.randomInput(osero_file)
         else: # ランダムAI
-            IN = board.randomInput()
+            IN = board.randomInput(osero_file)
             print(IN)
         print()
 
@@ -573,7 +594,7 @@ for _ in range(250):
             print('正しい形式(例：f5)で入力してください')
             continue
 
-        #tupleで受け取る
+        # strで受け取る
         arg = ''
         for i in board.RawBoard:
             for j in i:
@@ -629,3 +650,4 @@ for _ in range(250):
     # jsonファイル書き込み
     with open(a, 'w') as f:
         json.dump(osero_file, f, indent=2, ensure_ascii=False)
+    
