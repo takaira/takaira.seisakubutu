@@ -529,7 +529,7 @@ class Board:
                 arg += str(j)
 
         # 候補から辞書にない手を選ぶ
-        for i in range(len(grids)):
+        for i in range(len(grids[0])):
             x_grid = grids[0][i]
             y_grid = grids[1][i]
             if arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1] not in file:
