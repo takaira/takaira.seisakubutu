@@ -659,5 +659,5 @@ else:
     print('引き分け')
 
 # jsonファイル書き込み
-with open(a, 'w') as f:
-    json.dump(osero_file, f, indent=2, ensure_ascii=False)
+# with open(a, 'w') as f:
+#     json.dump(osero_file, f, indent=2, ensure_ascii=False)
