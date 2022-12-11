@@ -559,13 +559,16 @@ class Board:
 
         # 辞書内の有利そうな手を選ぶ
         num = 60
-        key = ''
+        key_list = []
         if len(dct) > 0:
             for i, j in dct.items():
-                if num >= j:
-                    key = i
+                if num > j:
                     num = j
-            return key[-2:]
+            for i, j in dct.items():
+                if j == num:
+                    key_list.append(i)
+            random_key_index =  random.randrange(len(key_list))
+            return key_list[random_key_index][-2:]
         else:
             randam_chosen_index = random.randrange(len(grids[0]))
             x_grid = grids[0][randam_chosen_index]
