@@ -533,25 +533,24 @@ class Board:
         for i in range(len(grids[0])):
             x_grid = grids[0][i]
             y_grid = grids[1][i]
-            if arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1] not in file:
-                break
-            else:
+            if arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1] in file:
                 dct[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]] = file[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]]
-        else:
-            # 全て辞書内にあるなら有利そうな手を選ぶ
-            num = 60
-            key = ''
+
+        # 辞書内の有利そうな手を選ぶ
+        num = 60
+        key = ''
+        if len(dct) > 0:
             for i, j in dct.items():
                 if num >= j:
                     key = i
                     num = j
             return key[-2:]
-            # randam_chosen_index = random.randrange(len(grids[0]))
-            # x_grid = grids[0][randam_chosen_index]
-            # y_grid = grids[1][randam_chosen_index]
-
-        # オセロの正式な座標表現で返す
-        return IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]
+        else:
+            randam_chosen_index = random.randrange(len(grids[0]))
+            x_grid = grids[0][randam_chosen_index]
+            y_grid = grids[1][randam_chosen_index]
+            # オセロの正式な座標表現で返す
+            return IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]
 
 
 """
