@@ -554,8 +554,8 @@ class Board:
             y_grid = grids[1][i]
             if arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1] in file:
                 dct[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]] = file[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]]
-            else:
-                break
+            # else:
+            #     break
 
         # 辞書内の有利そうな手を選ぶ
         num = 60
