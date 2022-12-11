@@ -502,12 +502,31 @@ class Board:
 
         return False
 
-
     """
     ランダムに手を打つCPU
     """
-    # def randomInput(self):
     def randomInput(self, file):
+
+        # マス判定(skip)をして置けるマスが無い場合はFalseを返す
+        if board.skip == True:
+            return False
+
+        # 置けるマス(MovablePos=1)のインデックスをgridsに格納
+        grids = np.where(self.MovablePos == 1)
+
+        # 候補からランダムに手を選ぶ
+        randam_chosen_index = random.randrange(len(grids[0]))
+        x_grid = grids[0][randam_chosen_index]
+        y_grid = grids[1][randam_chosen_index]
+
+        # オセロの表記で返す
+        return IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]
+
+    """
+    オセロAI
+    """
+    # def randomInput(self):
+    def AIInput(self, file):
 
         # マス判定(skip)をして置けるマスが無い場合はFalseを返す
         if board.skip == True:
@@ -535,6 +554,8 @@ class Board:
             y_grid = grids[1][i]
             if arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1] in file:
                 dct[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]] = file[arg + IN_ALPHABET[x_grid - 1] + IN_NUMBER[y_grid - 1]]
+            else:
+                break
 
         # 辞書内の有利そうな手を選ぶ
         num = 60
@@ -588,10 +609,10 @@ for _ in range(10):
         if board.CurrentColor == board.humanColor:
             # 人間の手を入力
             # IN = input()
-            #ランダムAI
+            #ランダムCPU
             IN = board.randomInput(osero_file)
-        else: # ランダムAI
-            IN = board.randomInput(osero_file)
+        else: # AI
+            IN = board.AIInput(osero_file)
         print(IN)
         print()
 
@@ -659,16 +680,20 @@ for _ in range(10):
     ## 勝敗
     dif = count_black - count_white
     if dif > 0:
-        for j in black_list:
-            osero_file[j] -= 1
-        for j in white_list:
-            osero_file[j] += 1
+        if HUMAN_COLOR == 'W':
+            for j in black_list:
+                osero_file[j] -= 1
+        if HUMAN_COLOR == 'B':
+            for j in white_list:
+                osero_file[j] += 1
         print('黒の勝ち')
     elif dif < 0:
-        for j in black_list:
-              osero_file[j] += 1
-        for j in white_list:
-            osero_file[j] -= 1
+        if HUMAN_COLOR == 'W':
+            for j in black_list:
+                osero_file[j] += 1
+        if HUMAN_COLOR == 'B':
+            for j in white_list:
+                osero_file[j] -= 1
         print('白の勝ち')
     else:
         print('引き分け')
