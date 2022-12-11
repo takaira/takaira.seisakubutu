@@ -580,7 +580,7 @@ class Board:
 """
 メインコード
 """
-for _ in range(10):
+for _ in range(5):
     # jsonファイルの読込み
     a = path.join(path.dirname(__file__), 'osero2.json')
     with open(a, 'r') as f:
