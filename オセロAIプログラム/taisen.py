@@ -558,7 +558,10 @@ class Board:
 """
 # for _ in range(40):
 # jsonファイルの読込み
-a = path.join(path.dirname(__file__), 'osero.json')
+# 基本AI
+# a = path.join(path.dirname(__file__), 'osero.json')
+#強化学習AI
+a = path.join(path.dirname(__file__), 'osero2.json')
 with open(a, 'r') as f:
     osero_file = json.load(f)
 
