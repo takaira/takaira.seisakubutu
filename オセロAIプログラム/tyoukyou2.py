@@ -646,7 +646,8 @@ for _ in range(10):
             for j in i:
                 if j:
                     count += 1
-        osero_file[arg + IN] = count
+        if arg + IN not in osero_file:
+            osero_file[arg + IN] = count
         if -1 * board.CurrentColor == WHITE:
             white_list.append(arg + IN)
         else:
