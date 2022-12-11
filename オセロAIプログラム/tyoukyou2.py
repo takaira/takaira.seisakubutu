@@ -610,8 +610,11 @@ for _ in range(10):
             # 人間の手を入力
             # IN = input()
             #ランダムCPU
-            IN = board.randomInput(osero_file)
-        else: # AI
+            # IN = board.randomInput(osero_file)
+            # AI
+            IN = board.AIInput(osero_file)
+        else: 
+            # AI
             IN = board.AIInput(osero_file)
         print(IN)
         print()
