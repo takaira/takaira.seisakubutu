@@ -548,7 +548,7 @@ class Board:
 """
 for _ in range(40):
     # jsonファイルの読込み
-    a = path.join(path.dirname(__file__), 'osero.json')
+    a = path.join(path.dirname(__file__), 'osero2.json')
     with open(a, 'r') as f:
         osero_file = json.load(f)
 
@@ -611,7 +611,8 @@ for _ in range(40):
             for j in i:
                 if j:
                     count += 1
-        osero_file[arg + IN] = count
+        if arg + IN not in osero_file:
+            osero_file[arg + IN] = count
 
         # 終局判定
         if board.isGameOver():
