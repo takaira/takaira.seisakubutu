@@ -684,20 +684,16 @@ for _ in range(10):
     ## 勝敗
     dif = count_black - count_white
     if dif > 0:
-        if HUMAN_COLOR == 'W':
-            for j in black_list:
-                osero_file[j] -= 1
-        if HUMAN_COLOR == 'B':
-            for j in white_list:
-                osero_file[j] += 1
+        for j in black_list:
+            osero_file[j] -= 1
+        for j in white_list:
+            osero_file[j] += 1
         print('黒の勝ち')
     elif dif < 0:
-        if HUMAN_COLOR == 'W':
-            for j in black_list:
-                osero_file[j] += 1
-        if HUMAN_COLOR == 'B':
-            for j in white_list:
-                osero_file[j] -= 1
+        for j in black_list:
+            osero_file[j] += 1
+        for j in white_list:
+            osero_file[j] -= 1
         print('白の勝ち')
     else:
         print('引き分け')
