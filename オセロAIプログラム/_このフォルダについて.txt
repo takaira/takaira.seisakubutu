@@ -9,3 +9,5 @@ taisen.py
 
 tyoukyou.py
 AI同士で対戦させosero.jsonにデータを蓄積します
+
+オセロやったことない人相手なら勝てるレベルです
