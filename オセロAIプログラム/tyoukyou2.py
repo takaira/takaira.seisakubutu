@@ -47,7 +47,7 @@ MAX_TURNS = 60
 # 人間の色
 print("B か Wを入力してください")
 # HUMAN_COLOR = input()
-HUMAN_COLOR = "W"
+HUMAN_COLOR = "B"
 
 
 """
